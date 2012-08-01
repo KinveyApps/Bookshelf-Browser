@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>The Kinvey Bookshelf</title>
+    <meta name="description" content="The Kinvey Bookshelf" />
+
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width" />
+
+	<!-- Styles -->
+	<link rel="stylesheet" href="styles/bookshelf.css" />
+
+	<!-- Bootstrap -->
+    <link rel="stylesheet" href="vendor/bootstrap.min.css" />
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        <h1>The Kinvey Bookshelf</h1>
+        <p class="alert alert-info" id="status">Loading…</p>
+      </header>
+
+      <div id="main" role="main">
+      	<!-- Form to add a new book. -->
+        <form action="#add" class="well form-inline" id="add" method="post">
+          <fieldset>
+            <input autofocus name="title" placeholder="Title" required type="text" />
+            <input name="author" placeholder="Author" required type="text" />
+            <button class="btn btn-primary" type="submit">Put a new book onto the shelf!</button>
+          </fieldset>
+        </form>
+
+        <!-- List of books. -->
+        <h2>Books</h2>
+        <ul id="collection">
+          <li>No books on the shelf :(</li>
+        </ul>
+
+        <!-- Form to list all books. -->
+        <form action="#list" class="well form-inline" id="list" method="post">
+          <input class="input-small" name="limit" placeholder="#" type="text" />
+          <select name="sort">
+            <option value="title">Order by title</option>
+            <option value="author">Order by author</option>
+          </select>
+          <button class="btn btn-inverse" type="submit">Show me what’s on the shelf!</button>
+        </form>      
+      </div>
+
+      <footer>
+        <em>Kinvey JavaScript Library example project for HTML5. License: <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License 2.0</a>.</em>
+      </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // ECMAScript5 shim for Android 2.1.
+      Object.defineProperty || document.write('<script defer src="vendor/es5-shim.min.js"><\/script>');
+
+      // IndexedDB shim.
+      window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB ||
+      document.write('<script defer src="vendor/IndexedDBShim.min.js"><\/script>');
+    </script>
+
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script>window.jQuery || document.write('<script src="vendor/jquery-1.7.2.min.js"><\/script>')</script>
+
+    <script defer src="//da189i1jfloii.cloudfront.net/js/kinvey-js-0.9.7.min.js"></script>
+
+    <script defer src="scripts/app.js"></script>
+    <script defer src="scripts/ui.js"></script>
+  </body>
+</html>
