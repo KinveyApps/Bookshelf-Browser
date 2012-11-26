@@ -1,7 +1,5 @@
 (function(window, Kinvey) {
-  /*globals window, Kinvey*/
-
-  // Export.
+  // Export, so declarations can be accessed outside this files’ scope.
   var App = window.Bookshelf = {};
 
   // Configure conflict policy prior to init, since that will trigger
@@ -12,7 +10,7 @@
   Kinvey.init({
     appKey: '<your-app-key>',
     appSecret: '<your-app-secret>',
-    sync: true
+    sync: true// Enable offline saving.
   });
 
   /**
@@ -23,7 +21,7 @@
     // Override constructor to preset the collection and store.
     constructor: function(attributes) {
       Kinvey.Entity.prototype.constructor.call(this, attributes, 'books', {
-        store: Kinvey.Store.OFFLINE
+        store: Kinvey.Store.OFFLINE// Enable offline saving.
       });
     },
 
@@ -43,13 +41,12 @@
       // Override constructor to preset the collection and store.
       Kinvey.Collection.prototype.constructor.call(this, 'books', {
         query: query,
-        store: Kinvey.Store.OFFLINE
+        store: Kinvey.Store.OFFLINE// Enable offline saving.
       });
     }
   });
 
-  // Application instances.
+  // Export class declaration and collection instance.
   App.Book = Book;
   App.bookCollection = new BookCollection();
-
 }(window, window.Kinvey));

@@ -1,31 +1,33 @@
 $(function() {
-  /*globals window,Kinvey*/
-
-  // Import.
+  // Import declarations into current scope.
   var App = window.Bookshelf;
 
-  // Templating.
+  /**
+   * Functions.
+   */
+  // Function to convert &, <, >, and " to their HTML equivalent.
   var encode = function(value) {
     return value.replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                 .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   };
+
+  // Templating function for a single book.
   var tpl = function(book) {
     var item = '<li class="row">' +
                '  <div class="span8">' +
                '    <h3>“' + encode(book.getTitle()) + '”</h3> by <em>' + encode(book.getAuthor()) + '</em>' +
                '  </div>';
 
-    // Only show shredder if the user has permission to do so.
+    // Only show "Shredder" if the user has write permission on the book.
     if(book.getMetadata().hasWritePermissions()) {
       item += '  <div class="span4">' +
               '    <button class="btn btn-danger destroy" data-id="' + encode(book.getId()) + '">Shredder!</button>' +
               '  </div>';
     }
-
     return item + '</li>';
   };
 
-  // Status updates.
+  // Function to update status message.
   var status = function(type, msg) {
     if(!Kinvey.Sync.isOnline) {
       msg += ' [Offline mode: the data below may be outdated]';
@@ -33,16 +35,19 @@ $(function() {
     $('#status').attr('class', 'alert alert-' + (type || 'info')).text(msg);
   };
 
-  // Catch data synchronization.
+  // Listen for synchronization occurrences.
   Kinvey.Sync.configure({
     start: function() {
+      // Synchronization process started.
       status('info', 'Synchronizing your data…');
     },
     success: function() {
+      // Synchronization process was successful.
       status('success', 'Synchronization complete.');
       list.trigger('submit');// Trigger collection refresh.
     },
     error: function(error) {
+      // Synchronization process failed.
       status('error', error.description);
     }
   });
@@ -67,14 +72,14 @@ $(function() {
     var query = new Kinvey.Query();
     var limit = list.find('[name="limit"]').val();
     var sort = list.find('[name="sort"]').val();
-    limit && query.setLimit(limit);
-    sort && query.on(sort).sort();
+    if(limit) { query.setLimit(limit); }// Set limit, if specified.
+    if(sort) { query.on(sort).sort(); }// Set field to sort on, if specified.
 
     // Pass query to collection, and fetch all the books.
     App.bookCollection.setQuery(query);
     App.bookCollection.fetch({
       success: function(list) {
-        // Parse template.
+        // Display.
         var books = list.map(tpl).join('');
         collection.html(books || '<li>No books on the shelf :(</li>');
 
@@ -123,7 +128,7 @@ $(function() {
     // Save.
     new App.Book({ title: titleVal, author: authorVal }).save({
       success: function() {
-        // Reset form.
+        // Reset form values.
         title.val('');
         author.val('');
 
@@ -174,7 +179,6 @@ $(function() {
     });
   });
 
-  // Onload, list all books.
+  // On application load, list all books.
   list.trigger('submit');
-
 });
