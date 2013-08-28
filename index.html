@@ -2,74 +2,93 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-
     <title>Bookshelf Sample Application</title>
+    
     <meta name="description" content="Bookshelf Sample Application" />
-
     <meta name="HandheldFriendly" content="true" />
     <meta name="MobileOptimized" content="320" />
     <meta name="viewport" content="width=device-width" />
 
-    <!-- Bootstrap is used to provide basic styling. -->
-    <link rel="stylesheet" href="vendor/bootstrap.min.css" />
-
-    <!-- Application-specific styles. -->
-    <link rel="stylesheet" href="styles/bookshelf.css" />
+    <!-- Bootstrap. -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="container">
-      <header>
-        <h1>Bookshelf Sample Application</h1>
-        <p class="alert alert-info" id="status">Loading…</p>
-      </header>
-
-      <div id="main" role="main">
-        <!-- Form to add a new book. -->
-        <form action="#add" class="well form-inline" id="add" method="post">
-          <fieldset>
-            <input autofocus name="title" placeholder="Title" required type="text" />
-            <input name="author" placeholder="Author" required type="text" />
-            <button class="btn btn-primary" type="submit">Put a new book onto the shelf!</button>
-          </fieldset>
-        </form>
-
-        <!-- List of books. -->
-        <h2>Books</h2>
-        <ul id="collection">
-          <li>No books on the shelf :(</li>
-        </ul>
-
-        <!-- Form to list all books. -->
-        <form action="#list" class="well form-inline" id="list" method="post">
-          <input class="input-small" name="limit" placeholder="#" type="text" />
-          <select name="sort">
-            <option value="title">Order by title</option>
-            <option value="author">Order by author</option>
-          </select>
-          <button class="btn btn-inverse" type="submit">Show me what’s on the shelf!</button>
-        </form>
-      </div>
-
-      <footer>
-        <em>Bookshelf Sample Application demonstrating Kinvey’s JavaScript library.</em>
-      </footer>
+    <!-- Header. -->
+    <div class="page-header">
+      <h1>Bookshelf Sample Application</h1>
     </div>
 
-    <!-- Add JavaScript libraries -->
-    <script>
-      // Load ECMAScript5 shim if needed (Android 2.1, Firefox 3.5 and 3.6).
-      Object.defineProperty || document.write('<script src="vendor/es5-shim.min.js"><\/script>');
+    <!-- Status. -->
+    <p class="alert alert-info" id="status">Loading…</p>
 
-      // Load IndexedDB shim if needed.
-      window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB ||
-      document.write('<script src="vendor/IndexedDBShim.min.js"><\/script>');
-    </script>
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-    <script>window.jQuery || document.write('<script src="vendor/jquery-1.8.3.min.js"><\/script>')</script>
-    <script src="//da189i1jfloii.cloudfront.net/js/kinvey-js-0.9.15.min.js"></script>
+    <!-- Add. -->
+    <form class="form-inline well" id="add" role="form">
+      <div class="form-group">
+        <label class="sr-only" for="title">Title</label>
+        <input autofocus required class="form-control" id="title" name="title" type="text" placeholder="Enter Title" />
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="author">Author</label>
+        <input required class="form-control" id="author" name="author" type="text" placeholder="Enter Author" />
+      </div>
+      <button class="btn btn-primary" type="submit">Place the book onto the shelf!</button>
+    </form>
 
-    <!-- Application-specific JavaScript files -->
-    <script defer src="scripts/app.js"></script>
-    <script defer src="scripts/ui.js"></script>
+    <!-- List. -->
+    <h2>Books</h2>
+    <table class="table table-hover" id="list">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="hide" id="row-template">
+        <tr>
+          <td data-placeholder="index"></td>
+          <td data-placeholder="title"></td>
+          <td data-placeholder="author"></td>
+          <td><button class="btn btn-danger btn-xs" data-action="shred">Shred</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Filter. -->
+    <form class="form-inline well" id="filter" role="form">
+      <div class="form-group">
+        <label class="sr-only" for="search">Search</label>
+        <input class="form-control input-sm" id="search" name="search" type="search" placeholder="Search" />
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="sort">Sort</label>
+        <select class="form-control input-sm" id="sort" name="sort">
+          <option value="author">Sort by author</option>
+          <option value="title">Sort by title</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="limit">Limit</label>
+        <select class="form-control input-sm" id="limit" name="limit">
+          <option value="">No limit</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
+      </div>
+      <button class="btn btn-link">Show!</button>
+    </form>
+
+    <!-- Footer. -->
+    <footer>
+      <em><small>Bookshelf Sample Application demonstrating Kinvey’s JavaScript library.</small></em>
+    </footer>
+
+    <!-- Libraries -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//da189i1jfloii.cloudfront.net/js/kinvey-html5-1.1.0.min.js"></script>
+
+    <script src="scripts/app.js"></script>
   </body>
 </html>

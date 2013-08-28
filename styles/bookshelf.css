@@ -1,6 +1,0 @@
-@charset "utf-8";
-
-/* Provide visual feedback when a network request is pending. */
-.loading {
-  opacity: .25
-}
