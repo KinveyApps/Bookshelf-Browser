@@ -30,11 +30,20 @@
     if(null === activeUser) {
       return Kinvey.User.create();
     }
+  }).then(null, function(error) {
+    status.trigger('error', error);
   });
 
   // On/offline hooks.
   document.addEventListener('offline', Kinvey.Sync.offline);
-  document.addEventListener('online', Kinvey.Sync.online);
+  document.addEventListener('online', function() {
+    status.trigger('loading', 'Synchronizing…');
+    Kinvey.Sync.online().then(function() {
+      status.trigger('success');
+    }, function(error) {
+      status.trigger('error', error);
+    });
+  });
 
   // Preseed data.
   promise.then(function() {
@@ -48,11 +57,11 @@
       var message = data instanceof Error ? data.message : data.description;
       status.html(message).removeClass('alert-info alert-success').addClass('alert-danger');
     },
-    loading: function() {
-      status.html('Loading…').removeClass('alert-danger alert-success').addClass('alert-info');
+    loading: function(e, text) {
+      status.html(text || 'Loading…').removeClass('alert-danger alert-success').addClass('alert-info');
     },
-    success: function() {
-      status.html('OK.').removeClass('alert-danger alert-info').addClass('alert-success');
+    success: function(e, text) {
+      status.html(text || 'OK.').removeClass('alert-danger alert-info').addClass('alert-success');
     }
   });
 
