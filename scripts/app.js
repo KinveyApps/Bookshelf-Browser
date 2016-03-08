@@ -133,8 +133,19 @@
       // Offline database does not support the regex query operator. Fallback to
       // equalTo.
       var method = Kinvey.Sync.isOnline() ? 'matches' : 'equalTo';
-      query[method]('title',  data.search, { ignoreCase: true }).or()
-           [method]('author', data.search, { ignoreCase: true });
+
+       if(method == 'matches'){
+        //RegExp to be used for the method "matches"     
+        var regex = new RegExp(["^",data.search,"$"].join(""));
+      
+        query[method]('title', regex).or()
+             [method]('author', regex);
+      }
+      else{
+        query[method]('title',  data.search).or()
+            [method]('author', data.search); 
+      }
+      
     }
     if('' !== data.limit) {
       query.limit(data.limit);
